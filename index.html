@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assessment Type Suitability (Your Profile)</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: #f9fafb;
+    }
+    h1 {
+      color: #0f766e;
+    }
+    .input-container {
+      margin: 20px auto;
+      max-width: 500px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    label {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+    }
+    input {
+      width: 60px;
+      text-align: center;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+    button {
+      background: #0f766e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #115e59;
+    }
+    #chart {
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Assessment Type Suitability</h1>
+  <p>Enter your self-assessed scores (0–10):</p>
+
+  <div class="input-container">
+    <label>Essays <input id="essays" type="number" min="0" max="10" value="8"></label>
+    <label>Exams <input id="exams" type="number" min="0" max="10" value="5"></label>
+    <label>Group Projects <input id="projects" type="number" min="0" max="10" value="3"></label>
+    <label>Presentations <input id="presentations" type="number" min="0" max="10" value="6"></label>
+    <label>Portfolios/Journals <input id="portfolios" type="number" min="0" max="10" value="9"></label>
+    <label>Practical/Lab Work <input id="labs" type="number" min="0" max="10" value="4"></label>
+    <button onclick="updateChart()">Update Chart</button>
+  </div>
+
+  <div id="chart"></div>
+
+  <script>
+    const labels = [
+      "Essays", 
+      "Exams", 
+      "Group Projects", 
+      "Presentations", 
+      "Portfolios/Journals", 
+      "Practical/Lab Work"
+    ];
+
+    function getScores() {
+      return [
+        Number(document.getElementById("essays").value),
+        Number(document.getElementById("exams").value),
+        Number(document.getElementById("projects").value),
+        Number(document.getElementById("presentations").value),
+        Number(document.getElementById("portfolios").value),
+        Number(document.getElementById("labs").value),
+      ];
+    }
+
+    function updateChart() {
+      const scores = getScores();
+      const data = [{
+        type: 'scatterpolar',
+        r: scores.concat(scores[0]),
+        theta: labels.concat(labels[0]),
+        fill: 'toself',
+        line: { color: 'teal' }
+      }];
+      const layout = {
+        polar: { radialaxis: { visible: true, range: [0, 10] } },
+        title: "Assessment Type Suitability (Your Profile)",
+        showlegend: false
+      };
+      Plotly.newPlot('chart', data, layout);
+    }
+
+    // Draw initial chart
+    updateChart();
+  </script>
+</body>
+</html>
